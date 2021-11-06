@@ -1,5 +1,5 @@
 # Vis Plastica
-##Constantly generating AI-generated images on a low-end computer.
+## Constantly generating AI-generated images on a low-end computer.
 
 ![Grey Skies by Piet Mondrian](https://github.com/dylski/visplastica/blob/main/examples/gray_skies_by_Piet_Mondrian.png?raw=true)
 
