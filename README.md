@@ -1,10 +1,15 @@
 # Vis Plastica
 Constantly generating AI-generated images on a low-end computer.
+![Grey Skies by Piet Mondrian](https://github.com/dylski/visplastica/blob/main/examples/gray_skies_by_Piet_Mondrian.png?raw=true)
+*Grey Skies by Piet Mondrian*
 
-This project runs on a Jetson Nano 4GB, which is a sort-of Raspberry Pi with 128 CUDA cores. I don't see why this would not work on a Raspberry Pi 4 with 4GB with a 64bit Raspbian. Creating an image using CLIPDraw takes about 4-5 hours with CUDA and 8-9 hours with CPU. I suspect on a RPi4 it run would run slightly faster than the Nano's CPU time (the RPi4 has slightly faster CPUs).
+This project is running 24/7 on a single-board computer, feeding images to [@visplastica](https://twitter.com/VisPlastica) and [visplastica.com](https://www.visplastica.com)
 
-The only AI-painting algorithm implemented at the moment is CLIPDraw but I hope to introduce others if they are feasible.
+The Jetson Nano is a sort-of Raspberry Pi with 128 CUDA cores. I think it should also work on a Raspberry Pi 4 with 4GB with a 64bit Raspbian OS. Creating an image using CLIPDraw takes about 4-5 hours with CUDA and 8-9 hours with CPU. I suspect on a RPi4 it run would run slightly faster than the Nano's CPU time (the RPi4 has slightly faster CPUs).
 
+Currently the only AI-painting algorithm implemented is CLIPDraw but I hope to introduce others if they are feasible.
+
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/visplastica.svg?style=social&label=Follow%20%40visplastica)](https://twitter.com/visplastica)
 ## Caveats
 
 1) These instructions are only based on my experiences with the Jetson Nano 4GB, JetPack 4.6.
