@@ -43,6 +43,7 @@ pip3 install numpy
 pip3 install cpython
 pip3 install cssutils
 pip3 install pycuda
+pip3 install tweepy
 
 # https://forums.developer.nvidia.com/t/instll-python-packages-librosa-and-llvm-on-jetson-nano-developer-kit-problem/74543/9
 sudo apt-get install llvm-10
