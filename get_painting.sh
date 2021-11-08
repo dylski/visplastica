@@ -12,6 +12,7 @@ do
 	echo Prompt $PROMPT
 	#echo BASENAME $BASENAME  
 	python clip_draw.py -p "$PROMPT" -f "$BASENAME" -i 500
+	./display_image_on_terminal.sh "done/${BASENAME}_x4.png"
 	python upload.py -f "$BASENAME"
         python tweeter.py -t "${PROMPT}." -f "done/${BASENAME}_x2.png"
 done
