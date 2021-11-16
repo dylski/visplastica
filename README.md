@@ -99,7 +99,7 @@ Finally, configure upload.py and tweeter.py with your details for web upload and
 
 To run with more than 384 line segments without CUDA timeout errors you need to deactivate the timeout:
 ```
-sudo -c sh 'echo N >/sys/kernel/debug/57000000.gpu/timeouts_enabled'
+sudo sh -c 'echo N >/sys/kernel/debug/57000000.gpu/timeouts_enabled'
 ```
 # Usage
 Remember to activate the python environment before running
