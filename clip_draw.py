@@ -48,6 +48,7 @@ import matplotlib.pylab as pl
 import numpy as np
 import os
 from pathlib import Path
+import pickle
 import PIL.Image, PIL.ImageDraw
 import pydiffvg
 import random
@@ -70,15 +71,16 @@ for i in range(2, 100):
             test_file, prompt))
 print('Using prompt "{}" and filename {}'.format(prompt, filename))
 
-neg_prompt = "brightly colored"
-neg_prompt_2 = "writing"
+neg_prompt = "messy"
+neg_prompt_2 = "ustructured"
 use_negative = False  # Use negative prompts?
 
 # ARGUMENTS. Feel free to play around with these, especially num_paths.
 args = lambda: None
-args.num_paths = 1000  # 384 works on Jetson Nano without disabling the gpu timeouts.
+canvas_width, canvas_height = 224, 224 # 448, 448  # 224, 224
+args.num_paths = 1000  # 384 works on Jetson Nano without disabling the gpu timeouts. 1500 takes about 8 hours.
 args.num_iter = num_iter  # 500 is generally good with 1000 lines.
-args.max_width = 480  # Large like 480 enables background fill-type effects.
+args.max_width = 300  # Large like 480 enables background fill-type effects.
 
 CUDA_version = [s for s in subprocess.check_output(
     ["nvcc", "--version"]).decode("UTF-8").split(", ") if s.startswith(
@@ -99,6 +101,7 @@ print("Loading CLIP model")
 # Might be able to use 'cpu' if running on Raspberry Pi?
 device = torch.device('cuda')
 model, preprocess = clip.load('ViT-B/32', device, jit=False)
+#model, preprocess = clip.load('clip_models/ViT-B-32.pt', device, jit=False)
 
 text_input = clip.tokenize(prompt).to(device)
 text_input_neg1 = clip.tokenize(neg_prompt).to(device)
@@ -123,7 +126,6 @@ gamma = 1.0
 pydiffvg.set_use_gpu(torch.cuda.is_available())
 pydiffvg.set_device(device)
 
-canvas_width, canvas_height = 224, 224
 num_paths = args.num_paths
 max_width = args.max_width
 
@@ -220,7 +222,7 @@ for t in range(args.num_iter):
             img.shape[0], img.shape[1], 3, 
             device=pydiffvg.get_device()) * (1 - img[:, :, 3:4])
     img = img[:, :, :3]
-    if t % 5 == 0:
+    if t % 50 == 0:
         pydiffvg.imwrite(img.cpu(), './latest.png', gamma=gamma)
     img = img.unsqueeze(0)
     img = img.permute(0, 3, 1, 2) # NHWC -> NCHW
@@ -260,7 +262,14 @@ for t in range(args.num_iter):
 print("Saving {} images for prompt '{}'".format(filename, prompt))
 scene_args = pydiffvg.RenderFunction.serialize_scene(\
             canvas_width, canvas_height, shapes, shape_groups)
-for scale_size in [1, 2, 3, 4]:
+
+pickled = f"done/{filename}.pt"
+with open(pickled, 'wb') as handle:
+    pickle.dump(scene_args, handle)
+
+# Smallest size
+canvas_width, canvas_height = 224, 224
+for scale_size in [1, 2, 3, 4, 8]:
     img = render(canvas_width * scale_size, 
             canvas_height * scale_size, 2, 2, args.num_iter, None, *scene_args)
     img = img[:, :, :3]
