@@ -108,8 +108,12 @@ Remember to activate the python environment before running
 
 `python clip_draw.py -p "An Aardvark in a disco" -f aarvark_disco -i 500`
 
-## Random painting followed by upload. Forever:
+## Random painting followed by posting and upload. Forever.
+Edit `secrets_template.py` with your creditials for upload and posting and save as `secrets.py`. 
+Alternatively, comment out relevant lines in `get_painting.sh`.
+
+To generate images forever:
 ```
-./get_painting
+./get_painting.sh
 ```
 Note `subjects.txt` contains the possible painting titles and `artists.txt` the artist styles.
