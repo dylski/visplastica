@@ -1,25 +1,22 @@
-# Post a tweet to Twitter
-# Based on https://www.mattcrampton.com/blog/step_by_step_tutorial_to_post_to_twitter_using_python_part_two-posting_with_photos/
-
 import argparse
 from pathlib import Path
 import tweepy
+from secrets import twitter
 
 def connect():
     # Your app's API/consumer key and secret can be found under the Consumer Keys
     # section of the Keys and Tokens tab of your app, under the
     # Twitter Developer Portal Projects & Apps page at
     # https://developer.twitter.com/en/portal/projects-and-apps
-    consumer_key = "YOUR_CONSUMER_KEY"
-    consumer_secret = "YOUR_CONSUMER_SECRET"
-
+    consumer_key = twitter["consumer_key"]
+    consumer_secret = twitter["consumer_secret"]
     # Your account's (the app owner's account's) access token and secret for your
     # app can be found under the Authentication Tokens section of the
     # Keys and Tokens tab of your app, under the
     # Twitter Developer Portal Projects & Apps page at
     # https://developer.twitter.com/en/portal/projects-and-apps
-    access_token = "YOUR_ACCESS_TOKEN"
-    access_token_secret = "YOUR_ACCESS_SECRET"
+    access_token = twitter["access_token"]
+    access_token_secret = twitter["access_token_secret"]
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
@@ -41,8 +38,11 @@ if __name__ == "__main__":
         print("Missing tweet body (use -t)")
         exit()
 
-    tweet += " #AIart #GenerativeArt #MachineLearning #jetsonnano @visplastica"
+    spaces = "                                                           "
+    tweet += "  instagram.com/vis_plastica visplastica.com"
+    tweet += spaces + "#AIart #GenerativeArt #MachineLearning #jetsonnano"
 
+    #import pdb; pdb.set_trace()
     api = connect()
 
     if filename is not None:

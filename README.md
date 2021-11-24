@@ -7,9 +7,10 @@
 
 This project is running 24/7 on a single-board computer, feeding images to [@visplastica](https://twitter.com/VisPlastica) and [visplastica.com](https://www.visplastica.com)
 
-The Jetson Nano is a sort-of Raspberry Pi with 128 CUDA cores. I think it should also work on a Raspberry Pi 4 with 4GB with a 64bit Raspbian OS. Creating an image using CLIPDraw takes about 4-5 hours with CUDA and 8-9 hours with CPU. I suspect on a RPi4 it run would run slightly faster than the Nano's CPU time (the RPi4 has slightly faster CPUs).
+The Jetson Nano is a sort-of Raspberry Pi with 128 CUDA cores. An image usingi the CLIPDraw algorithm takes about 4-5 hours with CUDA and 8-9 hours with CPU.
+This may work on a 4GB Raspberry Pi 4 with 64bit Raspbian OS; possibly slightly faster than the Nano's CPU time due to faster CPUs.
 
-Currently the only AI-painting algorithm implemented is (CLIPDraw)[https://github.com/kvfrans/clipdraw] but I'll introduce others if they are feasible.
+Currently the only AI-painting algorithm implemented is [CLIPDraw](https://github.com/kvfrans/clipdraw) but I'll introduce others if they are feasible.
 
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/visplastica.svg?style=social&label=Follow%20%40visplastica)](https://twitter.com/visplastica)
 ## Caveats

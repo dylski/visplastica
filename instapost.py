@@ -1,7 +1,8 @@
-# Post an image and caption to Instagram - based on https://levelup.gitconnected.com/automating-instagram-posts-with-python-and-instagram-graph-api-374f084b9f2b
-import requests
-import json
 import argparse
+import json
+import requests
+from secrets import instagram
+import time
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-u", "--url", help="URL to image")
@@ -13,8 +14,8 @@ text = args.get("text")
 if url is None or text is None:
     raise ValueError("Missing args")
 
-ig_user_id = "YOUR_IG_USER_ID"
-user_access_token = "YOUR_USER_ACCESS_TOKEN"
+ig_user_id = instagram["ig_user_id"]
+user_access_token = instagram["user_access_token"]
 def postInstagramQuote(url, text):
 #Post the Image
     post_url = 'https://graph.facebook.com/v10.0/{}/media'.format(ig_user_id)
@@ -38,7 +39,14 @@ def postInstagramQuote(url, text):
         print(r.text)
     else:
         print('HOUSTON we have a problem')
+        return False
+    return True
 
 url = "https://www.visplastica.com/gallery/" + url
-text += "                    #AIart #GenerativeArt #MachineLearning #jetsonnano"
-postInstagramQuote(url, text)
+text += "                                                            Click bio for info and code. #AIart #GenerativeArt #MachineLearning #jetsonnano"
+print("Posting {} with caption {}".format(url, text))
+for tries in range(5):
+    if postInstagramQuote(url, text):
+        break
+    time.sleep(10)
+    
