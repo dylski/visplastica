@@ -71,16 +71,16 @@ for i in range(2, 100):
             test_file, prompt))
 print('Using prompt "{}" and filename {}'.format(prompt, filename))
 
-neg_prompt = "messy"
-neg_prompt_2 = "ustructured"
-use_negative = False  # Use negative prompts?
+neg_prompt = "writing"
+neg_prompt_2 = "letters and digits"
+use_negative = True  # Use negative prompts?
 
 # ARGUMENTS. Feel free to play around with these, especially num_paths.
 args = lambda: None
 canvas_width, canvas_height = 224, 224 # 448, 448  # 224, 224
 args.num_paths = 1000  # 384 works on Jetson Nano without disabling the gpu timeouts. 1500 takes about 8 hours.
 args.num_iter = num_iter  # 500 is generally good with 1000 lines.
-args.max_width = 300  # Large like 480 enables background fill-type effects.
+args.max_width = 480  # (reset to 480 from the 24/11/2021, was 300)  # Large like 480 enables background fill-type effects.
 
 CUDA_version = [s for s in subprocess.check_output(
     ["nvcc", "--version"]).decode("UTF-8").split(", ") if s.startswith(
@@ -100,8 +100,8 @@ print("Torch version:", torch.__version__)
 print("Loading CLIP model")
 # Might be able to use 'cpu' if running on Raspberry Pi?
 device = torch.device('cuda')
-model, preprocess = clip.load('ViT-B/32', device, jit=False)
-#model, preprocess = clip.load('clip_models/ViT-B-32.pt', device, jit=False)
+# model, preprocess = clip.load('ViT-B/32', device, jit=False)
+model, preprocess = clip.load('clip_models/ViT-B-32.pt', device, jit=False)
 
 text_input = clip.tokenize(prompt).to(device)
 text_input_neg1 = clip.tokenize(neg_prompt).to(device)
@@ -110,7 +110,7 @@ text_input_neg2 = clip.tokenize(neg_prompt_2).to(device)
 # Thanks to Katherine Crowson for this. 
 # In the CLIPDraw code used to generate examples, we don't normalize images
 # before passing into CLIP, but really you should. Set this to True to do that.
-use_normalized_clip = False 
+use_normalized_clip = True 
 
 # Calculate features
 with torch.no_grad():
@@ -154,7 +154,7 @@ for i in range(num_paths):
     p0 = (random.random(), random.random())
     points.append(p0)
     for j in range(num_segments):
-        radius = 0.1
+        radius = 0.02
         p1 = (p0[0] + radius * (random.random() - 0.5),
                 p0[1] + radius * (random.random() - 0.5))
         p2 = (p1[0] + radius * (random.random() - 0.5),
@@ -174,7 +174,7 @@ for i in range(num_paths):
     path_group = pydiffvg.ShapeGroup(
             shape_ids=torch.tensor([len(shapes) - 1]), fill_color = None,
             stroke_color = torch.tensor([random.random(), random.random(),
-                random.random(), random.random()]))
+                random.random(), 0.8 * random.random()]))
     shape_groups.append(path_group)
 
 # Just some diffvg setup
@@ -266,6 +266,10 @@ scene_args = pydiffvg.RenderFunction.serialize_scene(\
 pickled = f"done/{filename}.pt"
 with open(pickled, 'wb') as handle:
     pickle.dump(scene_args, handle)
+
+svg_filename = f"done/{filename}.svg"
+pydiffvg.save_svg(svg_filename, canvas_width, canvas_height,
+                  shapes, shape_groups, use_gamma=False)
 
 # Smallest size
 canvas_width, canvas_height = 224, 224
