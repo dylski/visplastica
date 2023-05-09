@@ -118,3 +118,20 @@ To generate images forever:
 ./get_painting.sh
 ```
 Note `subjects.txt` contains the possible painting titles and `artists.txt` the artist styles.
+
+
+# Notes
+##  Patch sets
+The online patch set file names taken from the Colab:
+ 
+* Fruit and veg : fruit.npy
+* Sea glass : shore_glass.npy
+* Handwritten MNIST : handwritten_mnist.npy
+* Animals : animals.npy
+* Animal Forms: animal_forms.npy
+* Plant Forms: plant_forms.npy
+* Waste: waste.npy
+* Human artefacts: human_artefacts.npy
+* Leaves: open_leaves.npy
+* Broken plate: broken_plate.npy
+* Natural forms: natural_forms.npy

@@ -1,0 +1,73 @@
+#/bin/bash
+
+cd /home/dylski/projects/visplastica
+. venv/bin/activate
+
+CONFIG="jnano_bw_photo.yaml"
+TITLE="Early portrait photograph"
+PROMPT="${TITLE}, black and white photograph, early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
+#PROMPT="${TITLE}, black and white photograph, early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
+#PHOTORAPHERS="Garry Fabian Miller, Thomas Wedgwood, William Henry Fox Talbot, Man Ray, Louis Daguerre, Frederick Scott Archer" 
+#PROMPT="${TITLE}, neon signs, reflections, night, Shinjuku, rain, bladerunner, fungi, mycelium, protozoa, cellular microscopy, sea cucumber, caustics, ignis fatuus, light sources, ultrahd, 8k, unreal engine"
+#TITLE="A palace floating in the sky"
+#PROMPT="${TITLE}, ignis fatuus, ultrahd, 8k, unreal engine, intense light, ethereal"
+#CONFIG="jnano_waste_collage.yaml"
+#PROMPT="Troubled human face, Dada collage"
+#PROMPT="A photorealistic wide open English meadow with a city sky line composed of waste."
+#PROMPT="A botanical mobile mast made of rubbish against a sunset composed of leaves."
+#PROMPT="A photorealistic bright and beautiful pastel sunset sky"
+#PROMPT="Botanical illustration of a mobile phone mast"
+# PROMPT="a studio portrait photograph of a face"
+#PROMPT="a studio portrait photograph of a face"
+#PROMPT="love, hearts and a wedding anniversary"
+
+#RED=$((RANDOM%128 + 64))
+#GREEN=$((RANDOM%128 + 64))
+#BLUE=$((RANDOM%128 + 64))
+#RED=255
+#GREEN=249
+#BLUE=235
+# RED=0
+# GREEN=0
+# BLUE=0
+
+for i in 0 1 2
+do
+	OUTPUT_DIR="output"
+	TODAY=$(date +%Y_%m_%d)
+	BASENAME=`sed 's/ /_/g' <<< "$TITLE"`
+	OUTPUT="${OUTPUT_DIR}/${BASENAME}_${TODAY}_$(date +%H_%M)"
+	LOCALNAME="${OUTPUT}/highres_final_tiled_image_0.png"
+	OUTPUT_NAME="${BASENAME}_${TODAY}_$(date +%H_%M).png"
+	#echo BASENAME $BASENAME  
+	echo ""
+	echo $(date)
+	echo Run Arheim --prompt ${PROMPT} --num_patches=${num_patches} --no-gui
+	echo Prompt $TITLE
+	echo Output will go to ${OUTPUT}
+
+	#echo python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/jnano.yaml --output_dir "$OUTPUT" --background_red $RED --background_green $GREEN --background_blue $BLUE --global_prompt "${PROMPT}"
+	#python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/jnano.yaml --output_dir "$OUTPUT" --background_red $RED --background_green $GREEN --background_blue $BLUE --global_prompt "${PROMPT}"
+
+	#echo python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/${CONFIG} --output_dir "$OUTPUT"
+	#python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/${CONFIG} --output_dir "$OUTPUT"
+	echo python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/${CONFIG} --output_dir "$OUTPUT" --global_prompt "${PROMPT}"
+	python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/${CONFIG} --output_dir "$OUTPUT" --global_prompt "${PROMPT}"
+
+	echo cp "$LOCALNAME" "done/${OUTPUT_NAME}"
+	cp "$LOCALNAME" "done/${OUTPUT_NAME}"
+	convert "$LOCALNAME" -rotate 90 "done/display.png"
+
+	echo scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/gallery/${OUTPUT_NAME}"
+	scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/gallery/${OUTPUT_NAME}"
+	scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/latest_display.png"
+	ssh dylski@xmasvibe.com 'rm visplastica.com/cached-index.html'
+	# Use a copy so easy to reshow from command line if the terminal gets reset
+	echo ./display_image_on_terminal.sh "done/display.png"
+	./display_image_on_terminal.sh "done/display.png"
+	echo python tweeter.py -t "${TITLE}. ($PROMPT)" -f "${LOCALNAME}"
+	python tweeter.py -t "${TITLE}. ($PROMPT)" -f "${LOCALNAME}"
+	echo python instapost.py -t "${TITLE}. ($PROMPT)" -u "${OUTPUT_NAME}"
+	python instapost.py -t "${TITLE}. ($PROMPT)" -u "${OUTPUT_NAME}"
+
+done
