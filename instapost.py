@@ -43,7 +43,7 @@ def postInstagramQuote(url, text):
     return True
 
 url = "https://www.visplastica.com/gallery/" + url
-text += "                                                            Click bio for info and code. #AIart #GenerativeArt #MachineLearning #jetsonnano"
+text += "                                       Click bio for info and code. #AIart #GenerativeArt #MachineLearning #jetsonnano"
 print("Posting {} with caption {}".format(url, text))
 for tries in range(5):
     if postInstagramQuote(url, text):

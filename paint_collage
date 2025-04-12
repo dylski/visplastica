@@ -1,0 +1,59 @@
+#/bin/bash
+
+cd /home/dylski/projects/visplastica
+. venv/bin/activate
+
+PROMPT="An award-winning wildlife photograph"
+#PROMPT="A photorealistic wide open English meadow with a city sky line composed of waste."
+#PROMPT="A botanical mobile mast made of rubbish against a sunset composed of leaves."
+#PROMPT="A photorealistic bright and beautiful pastel sunset sky"
+#PROMPT="Botanical illustration of a mobile phone mast"
+# PROMPT="a studio portrait photograph of a face"
+#PROMPT="a studio portrait photograph of a face"
+#PROMPT="love, hearts and a wedding anniversary"
+
+#RED=$((RANDOM%128 + 64))
+#GREEN=$((RANDOM%128 + 64))
+#BLUE=$((RANDOM%128 + 64))
+#RED=255
+#GREEN=249
+#BLUE=235
+# RED=0
+# GREEN=0
+# BLUE=0
+
+OUTPUT_DIR="output"
+TODAY=$(date +%Y_%m_%d)
+BASENAME=`sed 's/ /_/g' <<< "$PROMPT"`
+OUTPUT="${OUTPUT_DIR}/${BASENAME}_${TODAY}_$(date +%H_%M)"
+LOCALNAME="${OUTPUT}/highres_final_tiled_image_0.png"
+OUTPUT_NAME="${BASENAME}_${TODAY}_$(date +%H_%M).png"
+#echo BASENAME $BASENAME  
+echo ""
+echo $(date)
+echo Run Arheim --prompt ${PROMPT} --num_patches=${num_patches} --no-gui
+echo Prompt $PROMPT
+echo Output will go to ${OUTPUT}
+
+#echo python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/jnano.yaml --output_dir "$OUTPUT" --background_red $RED --background_green $GREEN --background_blue $BLUE --global_prompt "${PROMPT}"
+#python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/jnano.yaml --output_dir "$OUTPUT" --background_red $RED --background_green $GREEN --background_blue $BLUE --global_prompt "${PROMPT}"
+echo python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/jnano.yaml --output_dir "$OUTPUT"
+python arnheim/arnheim_3/main.py --config arnheim/arnheim_3/configs/jnano.yaml --output_dir "$OUTPUT"
+
+echo cp "$LOCALNAME" "done/${OUTPUT_NAME}"
+cp "$LOCALNAME" "done/${OUTPUT_NAME}"
+convert "$LOCALNAME" -rotate 90 "done/display.png"
+
+echo scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/gallery/${OUTPUT_NAME}"
+scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/gallery/${OUTPUT_NAME}"
+scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/latest_display.png"
+ssh dylski@xmasvibe.com 'rm visplastica.com/cached-index.html'
+# Use a copy so easy to reshow from command line if the terminal gets reset
+echo ./display_image_on_terminal.sh "done/display.png"
+./display_image_on_terminal.sh "done/display.png"
+echo python tweeter.py -t "${PROMPT}." -f "${LOCALNAME}"
+python tweeter.py -t "${PROMPT}." -f "${LOCALNAME}"
+echo python instapost.py -t "${PROMPT}." -u "${OUTPUT_NAME}"
+python instapost.py -t "${PROMPT}." -u "${OUTPUT_NAME}"
+
+

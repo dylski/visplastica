@@ -1,0 +1,152 @@
+#global_prompt: a botanical illustration of a mobile phone mast in the distance set against a photorealistic bright and beautiful pastel sunset sky
+#background_url: 'https://www.visplastica.com/gallery/A_photorealistic_bright_and_beautiful_pastel_sunset_sky_2022_07_13_23_27.png'
+#global_prompt: a city sky line set against a photorealistic pastel sunset sky
+#background_url: 'https://www.visplastica.com/gallery/A_photorealistic_bright_and_beautiful_pastel_sunset_sky_2022_07_13_15_08.png'
+#render_method: masked_transparency_clipped
+#initial_max_rgb: 1.0
+#initial_min_rgb: 0.9
+#num_augs: 2
+#patch_set: waste.npy
+#num_patches: 32
+#pop_size: 2
+
+#global_prompt: a photorealistic bright and beautiful pastel sunset sky
+patch_set: waste.npy
+num_patches: 48
+#num_patches: 48
+#patch_set: animals.npy
+use_normalized_clip: true
+
+global_prompt: Photo of a deserted streets that have been reclaimed by beautiful plants, flowers and animals.
+#patch_set: animals.npy
+#num_patches: 48
+
+#global_prompt: A heavenly world with angels composed of waste
+#patch_set: waste.npy
+#num_patches: 48
+
+# FYI, 64 patches with waste is ~36 hours.
+#global_prompt: a photorealistic wide open english meadow with a city sky line
+#patch_set: waste.npy
+#num_patches: 64
+#
+invert_colours: true
+patch_max_proportion: 2
+render_method: transparency
+initial_max_rgb: 0.2
+initial_min_rgb: 0.45
+num_augs: 2
+
+# invert_colours: false
+# patch_max_proportion: 3
+# 23/5/22
+# render_method: masked_transparency_clipped
+# initial_max_rgb: 1.0
+# initial_min_rgb: 0.9
+# num_augs: 2
+# num_patches: 24
+# pop_size: 4
+# patch_set: human_artefacts.npy
+
+#num_augs: 4
+#num_patches: 24
+#pop_size: 2
+
+# 24/5/22
+#render_method: transparency
+#initial_max_rgb: 0.2
+#initial_min_rgb: 0.45
+#num_augs: 2
+#num_patches: 64
+#patch_set: human_artefacts.npy
+#num_patches: 48
+#patch_set: animals.npy
+#num_patches: 48
+#patch_set: waste.npy
+#num_patches: 24
+#patch_set: shore_glass.npy
+
+# global_prompt: a botanical illustration of a flower
+# render_method: masked_transparency_clipped
+# initial_max_rgb: 1.0
+# initial_min_rgb: 0.9
+# num_augs: 2
+# patch_set: waste.npy
+# num_patches: 48
+# pop_size: 2
+
+# render_method: transparency
+# initial_max_rgb: 0.2
+# initial_min_rgb: 0.45
+# num_augs: 2
+# patch_set: animals.npy
+# num_patches: 64
+
+background_use: Global
+colour_mutation_scale: 0.02
+colour_transformations: RGB space
+compositional_image: false
+distort_mutation_scale: 0.02
+evolution_frequency: 50
+fixed_scale_coeff: 0.3
+no-fixed_scale_patches: true
+ga_method: Microbial
+#ga_method: Microbial
+global_tile_prompt: false
+gradient_clipping: 10.0
+gui: false
+high_res_multiplier: 4
+
+initial_search_size: 1
+learning_rate: 0.15
+max_hue_deg: 360.0
+max_multiple_visualizations: 5
+max_rgb: 1.0
+max_rot_deg: 360.0
+max_sat: 1.0
+max_scale: 2.0
+max_shear: 0.2
+max_squeeze: 2.0
+max_trans: 1.0
+max_trans_init: 1.0
+max_val: 1.0
+min_hue_deg: 0.0
+min_rgb: -0.2
+min_rot_deg: -360.0
+min_sat: 0.0
+min_scale: 0.5
+min_shear: -0.2
+min_squeeze: 0.5
+min_trans: -1.0
+min_trans_init: -1.0
+min_val: 0.0
+normalize_patch_brightness: false
+
+optim_steps: 10000
+patch_height_min: 17
+patch_mutation_probability: 1.0
+# patch_repo_root: https://github.com/deepmind/arnheim/raw/main
+# patch_set: animals.npy
+patch_repo_root: https://storage.googleapis.com/dm_arnheim_3_assets/collage_patches
+patch_width_min: 16
+population_video: false
+pos_and_rot_mutation_scale: 0.02
+prompt_x0_y0: a photorealistic sky with sun
+prompt_x0_y1: a photorealistic tree
+prompt_x0_y2: a photorealistic field
+prompt_x1_y0: a photorealistic sky
+prompt_x1_y1: a photorealistic tree
+prompt_x1_y2: a photorealistic field
+prompt_x2_y0: a photorealistic sky with moon
+prompt_x2_y1: a photorealistic tree
+prompt_x2_y2: a photorealistic chicken
+scale_mutation_scale: 0.02
+tile_images: false
+tile_prompt_formating: close-up of {}
+tile_prompt_string: ''
+tiles_high: 1
+tiles_wide: 1
+trace_every: 200
+url_to_patch_file: ''
+use_image_augmentations: true
+video_steps: 0

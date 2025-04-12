@@ -3,9 +3,26 @@
 cd /home/dylski/projects/visplastica
 . venv/bin/activate
 
-CONFIG="jnano_bw_photo.yaml"
-TITLE="Early portrait photograph"
-PROMPT="${TITLE}, black and white photograph, early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
+CONFIG="jnano_retro_photo_2.yaml"
+TITLE="A portrait of a highly distinguished rabbit"
+PROMPT="${TITLE}, painted black and white photograph, early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
+#PROMPT="${TITLE}, old colour photograph, 80s early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
+#PROMPT="${TITLE}, vintage postcard, orange pumpkin, fireworks, bonfire, old colour photograph, 80s early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
+#CONFIG="jnano_retro_photo.yaml"
+#TITLE="Lads in Margate"
+#PROMPT="${TITLE}, vintage postcard, seaside town, sea, sand, sun, fairground, old colour photograph, 80s early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
+#TITLE="Springtime at night"
+#PROMPT="${TITLE}, colorful, artistic, botanical, garden borders, wild flowers, blue sky, vibrant, detailed, vignetting, hd, ultrahd"
+#CONFIG="jnano_streets_reclaimed_night.yaml"
+#CONFIG="jnano_retro_photo.yaml"
+#TITLE="A Christmas Card"
+#PROMPT="${TITLE}, painted black and white photograph, early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
+#TITLE="Friendly Halloween pumpkin"
+#PROMPT="${TITLE}, Pixar, animation, cartoon, happy, vibrant, backlit, lightbox, glow, night time, fireworks, stars, glitter, hd"
+# TITLE="Elon Musk and Mark Zuckerberg in a Cage Fight"
+#PROMPT="${TITLE}, MMS, TV sports, boxing, kung fu, rocky, action photo, stage lights, sweat, arena, hd, ultrahdi, realistic"
+#PROMPT="${TITLE}, family photo, ibeach, seaside, family, sand castle, pier, waves, colorized photograph, faded photo, poloroid, 70s, vignetting, hd, ultrahdi, realistic"
+#PROMPT="${TITLE}, black and white photograph, early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
 #PROMPT="${TITLE}, black and white photograph, early photography, daguerreotype, calotype, ambrotype, detailed, vignetting, hd, ultrahd"
 #PHOTORAPHERS="Garry Fabian Miller, Thomas Wedgwood, William Henry Fox Talbot, Man Ray, Louis Daguerre, Frederick Scott Archer" 
 #PROMPT="${TITLE}, neon signs, reflections, night, Shinjuku, rain, bladerunner, fungi, mycelium, protozoa, cellular microscopy, sea cucumber, caustics, ignis fatuus, light sources, ultrahd, 8k, unreal engine"
@@ -58,16 +75,17 @@ do
 	cp "$LOCALNAME" "done/${OUTPUT_NAME}"
 	convert "$LOCALNAME" -rotate 90 "done/display.png"
 
-	echo scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/gallery/${OUTPUT_NAME}"
-	scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/gallery/${OUTPUT_NAME}"
-	scp "$LOCALNAME" "dylski@xmasvibe.com:visplastica.com/latest_display.png"
-	ssh dylski@xmasvibe.com 'rm visplastica.com/cached-index.html'
+	echo scp "$LOCALNAME" "dylski@visplastica.com:visplastica.com/gallery/${OUTPUT_NAME}"
+	scp "$LOCALNAME" "dylski@visplastica.com:visplastica.com/gallery/${OUTPUT_NAME}"
+	scp "$LOCALNAME" "dylski@visplastica.com:visplastica.com/latest_display.png"
+	ssh dylski@visplastica.com 'rm visplastica.com/cached-index.html'
 	# Use a copy so easy to reshow from command line if the terminal gets reset
 	echo ./display_image_on_terminal.sh "done/display.png"
 	./display_image_on_terminal.sh "done/display.png"
 	echo python tweeter.py -t "${TITLE}. ($PROMPT)" -f "${LOCALNAME}"
 	python tweeter.py -t "${TITLE}. ($PROMPT)" -f "${LOCALNAME}"
-	echo python instapost.py -t "${TITLE}. ($PROMPT)" -u "${OUTPUT_NAME}"
-	python instapost.py -t "${TITLE}. ($PROMPT)" -u "${OUTPUT_NAME}"
-
+	echo python bluesky.py -t "${TITLE}. ($PROMPT)" -f "${LOCALNAME}"
+	python bluesky.py -t "${TITLE}. ($PROMPT)" -f "${LOCALNAME}"
+	#echo python instapost.py -t "${TITLE}. ($PROMPT)" -u "${OUTPUT_NAME}"
+	#python instapost.py -t "${TITLE}. ($PROMPT)" -u "${OUTPUT_NAME}"
 done
